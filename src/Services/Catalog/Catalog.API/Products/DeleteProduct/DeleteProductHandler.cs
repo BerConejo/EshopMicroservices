@@ -1,5 +1,6 @@
 ﻿using BuildingBlocks.CQRS;
 using Catalog.API.Models;
+using Catalog.API.Products.UpdateProduct;
 using System.Windows.Input;
 
 namespace Catalog.API.Products.DeleteProduct
@@ -8,6 +9,14 @@ namespace Catalog.API.Products.DeleteProduct
         : ICommand<DeleteProductResult>;
 
     public record DeleteProductResult(bool IsSuccess);
+
+    public class DeleteProductCommandValidator : AbstractValidator<DeleteProductCommand>
+    {
+        public DeleteProductCommandValidator()
+        {
+            RuleFor(command => command.Id).NotEmpty().WithMessage("Product ID is required");
+        }
+    }
 
     public class DeleteProductCommandHandler
         (IDocumentSession session, ILogger<DeleteProductCommandHandler> logger)
